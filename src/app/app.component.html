@@ -1,0 +1,38 @@
+<div class="flex justify-content-evenly flex-wrap">
+  <div class="flex align-items-center justify-content-center">
+    <div class="card flex justify-content-center">
+      <p-fileUpload name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" (onUpload)="onUpload($event)"
+                    [multiple]="true" accept="image/*,.pdf" [maxFileSize]="1000000">
+        <ng-template pTemplate="content">
+          <ul *ngIf="uploadedFiles.length">
+            <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+          </ul>
+        </ng-template>
+      </p-fileUpload>
+    </div>
+  </div>
+  <div class="flex align-items-center justify-content-center">
+    <div class="card flex align-items-center gap-2 flex-wrap">
+      <p-chip *ngFor="let file of uploadedFiles;" styleClass="sbv-chip">
+        <div class="flex justify-content-between flex-wrap">
+          <div class="flex align-items-center justify-content-center m-2">
+            <i class="pi pi-file-pdf"></i>
+          </div>
+          <div class="flex align-items-center justify-content-center m-2" (click)="onPreviewPdf(file.name)">
+            <span>{{ file.name }}</span>
+          </div>
+          <div class="flex align-items-center justify-content-center m-2" (click)="onRemove(file)">
+            <i class="pi pi-times-circle"></i>
+          </div>
+        </div>
+      </p-chip>
+      <p-dialog [(visible)]="visible" (onHide)="onHide()" [modal]="true">
+        <pdf-viewer [src]="path"
+                    [render-text]="true"
+                    [original-size]="false"
+                    style="width: 50vw; height: 80vh"
+        ></pdf-viewer>
+      </p-dialog>
+    </div>
+  </div>
+</div>
